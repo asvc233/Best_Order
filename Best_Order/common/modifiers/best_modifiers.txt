@@ -1,7 +1,7 @@
 ﻿# 工业禁令
 best_modifiers_1 = {
 	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds
-	building_group_bg_manufacturing_throughput_mult = -1
+	building_group_bg_manufacturing_throughput_mult = -2
 }
 
 # 14 小时
@@ -49,6 +49,7 @@ best_modifiers_4 = {
 	state_standard_of_living_add = -3
 }
 
+best_order_modifiers_pay_120 = {icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds}
 
 best_order_modifiers_pay_100 = {icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds}#WIP
 
@@ -58,57 +59,42 @@ bo_modifiers_transfer_payment_1 = {
 	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds
 	country_expenses_add = 1000
 }
-bo_modifiers_transfer_payment_5 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
-	country_expenses_add = 5000
-}
+# bo_modifiers_transfer_payment_5 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+# 	country_expenses_add = 5000
+# }
 
-bo_modifiers_transfer_payment_25 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
-	country_expenses_add = 25000
-}
-bo_modifiers_transfer_payment_50 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
-	country_expenses_add = 50000
-}
-bo_modifiers_transfer_payment_100 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
-	country_expenses_add = 100000
-}
+# bo_modifiers_transfer_payment_25 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+# 	country_expenses_add = 25000
+# }
+# bo_modifiers_transfer_payment_50 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+# 	country_expenses_add = 50000
+# }
+# bo_modifiers_transfer_payment_100 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+# 	country_expenses_add = 100000
+# }
 
 bo_modifiers_transfer_recieve_1 = {
 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
 	country_tax_income_add = 1000
 }
-bo_modifiers_transfer_recieve_5 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
-	country_tax_income_add = 5000
-}
-bo_modifiers_transfer_recieve_25 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
-	country_tax_income_add = 25000
-}
-bo_modifiers_transfer_recieve_50 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
-	country_tax_income_add = 50000
-}
-bo_modifiers_transfer_recieve_100 = {
-	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
-	country_tax_income_add = 100000
-}
+# bo_modifiers_transfer_recieve_5 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+# 	country_tax_income_add = 5000
+# }
+# bo_modifiers_transfer_recieve_25 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+# 	country_tax_income_add = 25000
+# }
+# bo_modifiers_transfer_recieve_50 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+# 	country_tax_income_add = 50000
+# }
+# bo_modifiers_transfer_recieve_100 = {
+# 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+# 	country_tax_income_add = 100000
+# }
 
-every_scope_state = {
-	owner = {
-		if = {
-			limit = {has_variable = num_state_var}
-			change_variable = {
-				name = num_state_var
-				add = 1
-			}
-		}
-		else = {
-			set_variable = {name = num_state_var value = 1}
-		}
-	}
-	
-}

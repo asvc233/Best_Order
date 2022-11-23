@@ -6,11 +6,8 @@
 	potential = {
 		NOT = { is_country_type = decentralized }
 		scope:target_country = {
-			NOR = { 
+			not = { 
 				is_country_type = decentralized 
-				is_subject_type = subject_type_dominion
-				is_subject_type = subject_type_protectorate
-				is_subject_type = subject_type_personal_union
 			}
 			is_subject_of = ROOT
 		}

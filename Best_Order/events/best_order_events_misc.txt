@@ -11,7 +11,7 @@ best_order.1000 = {
 		exists = scope:target_country
 	}
 	title = best_order_events.1000.t
-	desc = best_order_events.1000.t
+	desc = best_order_events.1000.d
 
 	event_image = {
 		video = "gfx/event_pictures/unspecific_signed_contract.bk2"
@@ -26,27 +26,65 @@ best_order.1000 = {
 	immediate = {
 		save_scope_as = root_country
 	}
+
+	# Construction
 	option = { 
-		default_option = yes
+		trigger = {
+			scope:target_country = {
+				trigger_if = {
+					limit = {
+						or = {
+							is_subject_type = subject_type_dominion
+							is_subject_type = subject_type_protectorate
+							is_subject_type = subject_type_personal_union
+					}}
+					or = {
+							has_modifier = best_order_modifiers_pay_120
+							has_modifier = best_order_modifiers_pay_100
+						}
+				}
+			}
+			
+		}
 		name = choose.1
 		trigger_event = { id = best_order.4 popup = yes }
 	}
-
+	# ban industry
 	option = { 
+		trigger = {
+			scope:target_country = {
+				nor = {
+					is_subject_type = subject_type_dominion
+					is_subject_type = subject_type_protectorate
+					is_subject_type = subject_type_personal_union
+				}
+			}
+			
+		}
 		name = choose.2
 		trigger_event = { id = best_order.7 popup = yes }
 	}
-
+	# work time
 	option = {
+		trigger = {
+			scope:target_country = {
+				nor = {
+					is_subject_type = subject_type_dominion
+					is_subject_type = subject_type_protectorate
+					is_subject_type = subject_type_personal_union
+				}
+			}
+			
+		}
 		name = choose.3
 		trigger_event = { id = best_order.8 popup = yes }
 	}
-
-	option = { 
+	# payment
+	option = {
 		name = choose.4
 		trigger_event = { id = best_order.9 popup = yes }
 	}
-
+	# fund transfer(wip)
 	option = { 
 		name = choose.5
 	}
@@ -244,7 +282,7 @@ best_order.9 = {
 	}
 
 	title = Overlord_Fund_Construction.t
-	desc = Overlord_Fund_Construction.t
+	desc = Overlord_Fund_Construction.d
 
 	event_image = {
 		video = "gfx/event_pictures/unspecific_signed_contract.bk2"
@@ -256,7 +294,17 @@ best_order.9 = {
 	icon = "gfx/interface/icons/event_icons/event_default.dds"
 
 	duration = 1
-	
+	#120%
+	option = {
+		trigger = {
+			scope:target_country = {NOT = {has_modifier = best_order_modifiers_pay_120}}
+		}
+		name = bo.vme120
+		scope:target_country = {
+			bo_no_payment_construction = yes
+			add_modifier = best_order_modifiers_pay_120
+		}
+	}
 	#100%
 	option = {
 		trigger = {
@@ -264,49 +312,65 @@ best_order.9 = {
 		}
 		name = bo.vme100
 		scope:target_country = {
+			bo_no_payment_construction = yes
 			add_modifier = best_order_modifiers_pay_100
-			if = {
-				limit = {
-					has_modifier = best_order_modifiers_pay_50
-				}
-				remove_modifier = best_order_modifiers_pay_50
-			}
 		}
 	}
 	#50%
 	option = {
 		trigger = {
-			scope:target_country= {NOT = {has_modifier = best_order_modifiers_pay_50}}
+			scope:target_country= {
+				not = {has_modifier = best_order_modifiers_pay_50}
+				nor = {
+					is_subject_type = subject_type_dominion
+					is_subject_type = subject_type_protectorate
+					is_subject_type = subject_type_personal_union
+				}
+			}
+			
 		}
 		name = bo.vme50
 		scope:target_country = {
+			bo_no_payment_construction = yes
 			add_modifier = best_order_modifiers_pay_50
-			if = {
-				limit = {
-					has_modifier = best_order_modifiers_pay_100
-				}
-				remove_modifier = best_order_modifiers_pay_100
-			}
 		}
 	}
 	#0%
 	option = {
 		name = bo.pay_nothing
 		scope:target_country = {
-			if = {
-				limit = {
-					has_modifier = best_order_modifiers_pay_100
-				}
-				remove_modifier = best_order_modifiers_pay_100
-			}
-			else_if = {
-				limit = {
-					has_modifier = best_order_modifiers_pay_50
-				}
-				remove_modifier = best_order_modifiers_pay_50
-			}
+			bo_no_payment_construction = yes
 		}
 	}
+	
+	option = {
+		default_option = yes
+		name = RETURN
+		trigger_event = { id = best_order.1000 popup = yes }
+	}
+}
+
+best_order.10 = {
+	type = country_event
+	placement = root
+
+	trigger = {
+		exists = scope:target_country
+	}
+
+	title = investment.t
+	desc = investment.d
+
+	event_image = {
+		video = "gfx/event_pictures/unspecific_signed_contract.bk2"
+	}
+
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	on_opened_soundeffect = "event:/SFX/Events/unspecific/signed_contract"
+
+	icon = "gfx/interface/icons/event_icons/event_default.dds"
+
+	duration = 1
 	
 	option = {
 		default_option = yes

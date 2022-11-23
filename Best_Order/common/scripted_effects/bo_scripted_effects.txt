@@ -5,14 +5,57 @@ bo_start_building_construction = {
 		name = bo_payment_amount value = 0
 	}
 	if = {
-		limit = {scope:target_country = {has_modifier = best_order_modifiers_pay_100}}
-		scope:root_country = {change_relations = {country = scope:target_country value = {value = 2 multiply = var:bo_count_var}}}
+		limit = {scope:target_country = {has_modifier = best_order_modifiers_pay_120}}
+		scope:root_country = {change_relations = {country = scope:target_country value = {
+			value = 1 
+			if = {
+				limit = {scope:target_country = {
+					nor = {
+						is_subject_type = subject_type_dominion
+						is_subject_type = subject_type_protectorate
+						is_subject_type = subject_type_personal_union
+				}}}
+				add = 1
+			}
+			scope:best_order_chosen_state = {
+				multiply = var:bo_count_var
+			}
+			
+		}}}
+		
 	}
-	else_if {limit = {scope:target_country = {has_modifier = best_order_modifiers_pay_50}}}
+	else_if = {limit = {scope:target_country = {has_modifier = best_order_modifiers_pay_100}}
+		scope:root_country = {
+			change_relations = {
+				country = scope:target_country value = {
+					value = 0 
+					if = {
+						limit = {scope:target_country = {
+							nor = {
+								is_subject_type = subject_type_dominion
+								is_subject_type = subject_type_protectorate
+								is_subject_type = subject_type_personal_union
+						}}}
+						add = 1
+					}
+					scope:best_order_chosen_state = {
+						multiply = var:bo_count_var
+					}
+				}
+			}
+		}
+	}
+	else_if = {limit = {scope:target_country = {has_modifier = best_order_modifiers_pay_50}}}
 	else = {
-		scope:root_country = {change_relations = {country = scope:target_country value = {value = -2 multiply = var:bo_count_var}}}
+		scope:root_country = {change_relations = {country = scope:target_country 
+		value = {
+			value = -1 
+			scope:best_order_chosen_state = {
+				multiply = var:bo_count_var
+			}}
+		}}
 	}
-
+	
 	while = {
 		limit = {
 			var:bo_count_var > 0
@@ -94,6 +137,7 @@ bo_start_building_construction = {
 			OR = {
 				has_modifier = best_order_modifiers_pay_50
 				has_modifier = best_order_modifiers_pay_100
+				has_modifier = best_order_modifiers_pay_120
 			} 
 		}}
 		
@@ -325,7 +369,7 @@ bo_normal_working_time = {
 	}
 }
 
-#scope:country
+#scope:state
 bo_effect_construction_start = {
 	start_building_construction = $bt$
 
@@ -339,132 +383,73 @@ bo_effect_construction_start = {
 
 #scope:target_country
 bo_recieve_payment = {
-	set_variable = {name = bo_recieve_payment_var value = global_var:bo_transfer_amount_var}
-	change_variable = {
+	set_global_variable = {name = bo_recieve_payment_var value = global_var:bo_transfer_amount_var}
+	change_global_variable = {
 		name = bo_recieve_payment_var
 		divide = {value = scope:target_country.construction_queue_duration max = 100 min = 1}
 	}
-	while = {
-		limit = {var:bo_recieve_payment_var > 1000 }
-		if = {limit = {var:bo_recieve_payment_var > 100000}
-			add_modifier = {
-				name = bo_modifiers_transfer_recieve_100
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_recieve_payment_var
-				subtract = 100000
-			}
+	add_modifier = {
+		name = bo_modifiers_transfer_recieve_1
+		days = bo_value_transfer_payment_days
+		multiplier = {
+			value = global_var:bo_recieve_payment_var 
+			divide = 1000 
+			floor = yes
 		}
-		else_if = {limit = {var:bo_recieve_payment_var > 50000}
-			add_modifier = {
-				name = bo_modifiers_transfer_recieve_50
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_recieve_payment_var
-				subtract = 50000
-			}
-		}
-		else_if = {limit = {var:bo_recieve_payment_var > 25000}
-			add_modifier = {
-				name = bo_modifiers_transfer_recieve_25
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_recieve_payment_var
-				subtract = 25000
-			}
-		}
-		else_if = {limit = {var:bo_recieve_payment_var > 5000}
-			add_modifier = {
-				name = bo_modifiers_transfer_recieve_5
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_recieve_payment_var
-				subtract = 5000
-			}
-		}
-		else_if = {limit = {var:bo_recieve_payment_var > 1000}
-			add_modifier = {
-				name = bo_modifiers_transfer_recieve_1
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_recieve_payment_var
-				subtract = 1000
-			}
-		}
-
+	}
+	change_global_variable = {
+		name = bo_recieve_payment_var
+		modulo = 1000
 	}
 	
-	add_treasury = {value = var:bo_recieve_payment_var multiply = {value = scope:target_country.construction_queue_duration max = 100}}
-	remove_variable = bo_recieve_payment_var
-
+	add_treasury = {value = global_var:bo_recieve_payment_var multiply = {value = scope:target_country.construction_queue_duration max = 100}}
+	remove_global_variable = bo_recieve_payment_var
 }
-#scope:scope_rootxx
+
+#scope:root
 bo_send_payment = {
-	
-	set_variable = {name = bo_send_payment_var value = {value = 0 subtract = global_var:bo_transfer_amount_var}}
+	set_variable = {name = bo_send_payment_var value = global_var:bo_transfer_amount_var}
 	change_variable = {
 		name = bo_send_payment_var
 		divide = {value = scope:target_country.construction_queue_duration max = 100 min = 1}
 	}
-	while = {
-		limit = {var:bo_send_payment_var < -1000 }
-		if = {limit = {var:bo_send_payment_var < -100000}
-			add_modifier = {
-				name = bo_modifiers_transfer_payment_100
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_send_payment_var
-				add = 100000
-			}
+	add_modifier = {
+		name = bo_modifiers_transfer_payment_1
+		days = bo_value_transfer_payment_days
+		multiplier = {
+			value = var:bo_send_payment_var 
+			divide = 1000 
+			floor = yes
 		}
-		else_if = {limit = {var:bo_send_payment_var < -50000}
-			add_modifier = {
-				name = bo_modifiers_transfer_payment_50
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_send_payment_var
-				add = 50000
-			}
-		}
-		else_if = {limit = {var:bo_send_payment_var < -25000}
-			add_modifier = {
-				name = bo_modifiers_transfer_payment_25
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_send_payment_var
-				add = 25000
-			}
-		}
-		else_if = {limit = {var:bo_send_payment_var < -5000}
-			add_modifier = {
-				name = bo_modifiers_transfer_payment_5
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_send_payment_var
-				add = 5000
-			}
-		}
-		else_if = {limit = {var:bo_send_payment_var < -1000}
-			add_modifier = {
-				name = bo_modifiers_transfer_payment_1
-				days = bo_value_transfer_payment_days
-			}
-			change_variable = {
-				name = bo_send_payment_var
-				add = 1000
-			}
-		}
+	}
+	change_variable = {
+		name = bo_send_payment_var
+		modulo = 1000
+		multiply = -1
 	}
 	
 	add_treasury = {value = var:bo_send_payment_var multiply = {value = scope:target_country.construction_queue_duration max = 100}}
 	remove_variable = bo_send_payment_var
+}
+
+#scope:country
+bo_no_payment_construction = {
+	if = {
+		limit = {
+			has_modifier = best_order_modifiers_pay_120
+		}
+		remove_modifier = best_order_modifiers_pay_120
+	}
+	else_if = {
+		limit = {
+			has_modifier = best_order_modifiers_pay_100
+		}
+		remove_modifier = best_order_modifiers_pay_100
+	}
+	else_if = {
+		limit = {
+			has_modifier = best_order_modifiers_pay_50
+		}
+		remove_modifier = best_order_modifiers_pay_50
+	}
 }

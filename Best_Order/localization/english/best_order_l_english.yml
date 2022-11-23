@@ -4,6 +4,7 @@
  Best_order_desc:0 "Order vassals to build buildings"
 
  best_order_events.1000.t:0 "Open Command Menu"
+  best_order_events.1000.d:0 "Note: dominions, protectorates, personal_unions won't work for free"
   choose.1:0 "Order vassals to build buildings"
   choose.2:0 "Industrial Ban"
   choose.3:0 "Work! Work! Work!"
@@ -29,9 +30,11 @@
 
  Overlord_Fund_Construction.t:0 "Payment Transfer"
   Overlord_Fund_Construction.d:0 "Are you willing to pay for the construction you ordered?\n Note: Assume that every construction point cost 1000 pounds"
+  bo.vme120:0 "It's an investment (120%)"
   bo.vme100:0 "You should be thankful that I'm gonna pay for all the bills (100%)"
   bo.vme50:0 "You do your part, and I will pay for the rest (50%)"
   bo.pay_nothing:0 "I won't pay even a single penny!"
+  best_order_modifiers_pay_100:0 "120% funding"
   best_order_modifiers_pay_100:0 "100% funding"
   best_order_modifiers_pay_50:0 "50% funding"
   bo_modifiers_transfer_payment_1:0 "Transfering Payment"
